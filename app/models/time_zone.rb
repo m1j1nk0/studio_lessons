@@ -1,0 +1,4 @@
+class TimeZone < ApplicationRecord
+  
+
+end

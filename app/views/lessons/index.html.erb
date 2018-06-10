@@ -1,2 +1,66 @@
-<h1>Lessons#index</h1>
-<p>Find me in app/views/lessons/index.html.erb</p>
+<div class="col-lg-8">
+  
+  <%= form_for @form,  url: lessons_path, method: :get do |f| %>
+  
+    <p>
+      <%= f.label :store_id, '店舗:' %>
+      <%= f.collection_select :store_id, Store.all, :id, :name,  include_blank: true %>
+    </p>
+  
+    <p>
+      <%= f.label :kind_id, '種類:' %>
+      <%= f.collection_select :kind_id, Kind.all, :id, :name,  include_blank: true %>
+    </p>
+  
+    <p>
+      <%= f.label :instractor, 'instractor:' %>
+      <%= f.text_field :instractor %>
+    </p>
+    
+    <p>
+      <%= f.label :day_of_weeks, '曜日:' %>
+      <%= f.collection_check_boxes :day_of_weeks, DayOfWeek.all, :name, :name, include_hidden: false, checked: @form.day_of_weeks %>
+    </p>
+    
+    <p>
+      <%= f.label :start_at_from, '開始時間:' %>
+      <% start_time = Time.zone.parse('2000-1-1 7:00') %>
+      <%#= f.select :start_at_from, (1..20).map {|past_time| ["#{start_time.since(past_time.hours)}", "#{start_time.since(past_time.hours)}"] } %>
+      
+      <%= f.collection_select :start_at_from, TimeZone.all, :time_value, :name, include_blank: true %>
+      ～
+      <%= f.collection_select :start_at_end, TimeZone.all, :time_value, :name, include_blank: true %>
+    </p>
+  
+    <p>
+      <%= f.submit '検索する'%>
+    </p>
+  <% end %>
+  
+  <table class="table table-striped">
+    <thead>
+      <th>店舗</th>
+      <th>種別</th>
+      <th>レッスン名</th>
+      <th>IR</th>
+      <th>曜日</th>
+      <th>開始時間</th>
+      <th>お気に入り</th>
+    </thead>
+    <tbody>
+      <% @lessons.each do |lesson| %>
+        <tr>
+          <td><%= lesson.store_name %></td>
+          <td><%= lesson.kind_name %></td>    
+          <td><%= lesson.name %></td>
+          <td><%= lesson.instractor %></td>
+          <td><%= lesson.day_of_week %></td>    
+          <td><%= lesson.start_at.strftime("%H:%M")  %></td>      
+          <td><%= render "favorites/favorite_button", lesson: lesson %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+  <%= paginate @lessons %>
+</div>

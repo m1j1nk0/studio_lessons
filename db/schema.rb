@@ -10,9 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180429101537) do
+ActiveRecord::Schema.define(version: 20180610072711) do
 
   create_table "clubs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "day_of_weeks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -25,6 +31,15 @@ ActiveRecord::Schema.define(version: 20180429101537) do
     t.datetime "updated_at", null: false
     t.index ["lesson_id"], name: "index_favolites_on_lesson_id", using: :btree
     t.index ["member_id"], name: "index_favolites_on_member_id", using: :btree
+  end
+
+  create_table "favorites", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "lesson_id"
+    t.integer  "member_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lesson_id"], name: "index_favorites_on_lesson_id", using: :btree
+    t.index ["member_id"], name: "index_favorites_on_member_id", using: :btree
   end
 
   create_table "kinds", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -67,13 +82,23 @@ ActiveRecord::Schema.define(version: 20180429101537) do
   create_table "stores", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "club_id"
     t.string   "name"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "schedule_url"
+    t.index ["club_id"], name: "index_stores_on_club_id", using: :btree
+  end
+
+  create_table "time_zones", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.time     "time_value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["club_id"], name: "index_stores_on_club_id", using: :btree
+    t.string   "name"
   end
 
   add_foreign_key "favolites", "lessons"
   add_foreign_key "favolites", "members"
+  add_foreign_key "favorites", "lessons"
+  add_foreign_key "favorites", "members"
   add_foreign_key "lesson_kinds", "kinds"
   add_foreign_key "lessons", "lesson_kinds"
   add_foreign_key "lessons", "stores"

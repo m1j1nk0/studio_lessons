@@ -1,0 +1,15 @@
+
+  <% if current_member.is_favorite?(lesson) %>
+    <%= form_for(current_member.favorites.find_by(lesson_id: lesson.id), html: { method: :delete }) do |f| %>
+      <%= hidden_field_tag :lesson_id, lesson.id %>
+
+      <%= f.submit "お気に入りから外す", class: "btn btn-primary btn-xs" %>
+    <% end %>
+  <% else %>
+    <%= form_for(current_member.favorites.build) do |f| %>
+      <%= hidden_field_tag :lesson_id, lesson.id %>
+
+      <%= f.submit "favorite", class: "btn btn-danger btn-xs" %>
+    <% end %>  
+
+  <% end %>

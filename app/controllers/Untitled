@@ -1,0 +1,25 @@
+  <%= form_tag lessons_path, :method => 'get', class: "form-inline" do %> 
+    <fieldset class="form-group">
+      <div class="form-group">
+        <label>lesson_kind_name</label>
+        <%= text_field_tag :lesson_kind_name, params[:lesson_kind_name], class: "form-control" %>
+      </div>
+      <div class="form-group">
+        <label>Instractor</label>
+        <%= text_field_tag :instractor, params[:instractor], class: "form-control" %>
+      </div>      
+      <div class="form-group">
+        <label>曜日</label>
+        <%= text_field_tag :day_of_week, params[:day_of_week], class: "form-control" %>
+        <% %w(sun mon tue wed thurs fri sat).each.with_index do |day_of_week,i| %>
+          <label>
+            <%= check_box_tag 'lesson[day_of_week][]', day_of_week,false,id:"lesson_day_of_week#{i}"%>
+            <%= day_of_week %>
+          </label>
+        <% end %>
+
+      </div>    
+  
+      <%= submit_tag "Search", :name => nil, class: "form-control btn btn-primary" %>
+    </fieldset>
+  <% end %>
